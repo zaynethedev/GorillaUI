@@ -1,5 +1,5 @@
 # GorillaUI
--# Remade the repo so here we go lol
+
 ![image](https://github.com/user-attachments/assets/edcd9186-c9c3-4f43-be31-f114110d569d)
 
 ## Features:
