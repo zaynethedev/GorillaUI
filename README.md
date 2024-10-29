@@ -9,7 +9,7 @@
 - Third person/FPC: Swaps between third person camera and first person camera. Also accessable by clicking "Q"
 - Gamemode selecter: Selects the gamemode that you click on. This menu is accesible by clicking the " ` " key.
 
-### Features that are coming soon:
+## Features that are coming soon:
 - A modded lobby only GUI that includes mods such as:
   - NoClip
   - Disable leaves
