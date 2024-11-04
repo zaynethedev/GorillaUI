@@ -2,11 +2,10 @@
 using System.ComponentModel.Design;
 using BepInEx;
 using GorillaNetworking;
-using GorillaTagModTemplateProject;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Utilla;
+using Newtilla;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 
@@ -18,7 +17,7 @@ namespace GorillaUI
     /// </summary>
 
     /* This attribute tells Utilla to look for [ModdedGameJoin] and [ModdedGameLeave] */
-    [ModdedGamemode]
+    /*[ModdedGamemode]*/
     [BepInDependency("org.legoandmars.gorillatag.utilla", "1.5.0")]
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
     public class GorillaUI : BaseUnityPlugin
@@ -39,7 +38,8 @@ namespace GorillaUI
             /* A lot of Gorilla Tag systems will not be set up when start is called /*
 			/* Put code in OnGameInitialized to avoid null references */
 
-            Utilla.Events.GameInitialized += OnGameInitialized;
+            Newtilla.Newtilla.OnJoinModded += OnModdedJoined;
+            Newtilla.Newtilla.OnLeaveModded += OnModdedLeft;
         }
 
         void OnEnable()
@@ -92,7 +92,7 @@ namespace GorillaUI
 
             if (inRoom)
             {
-                if (Keyboard.current.uKey.wasPressedThisFrame)
+                if (Keyboard.current.cKey.wasPressedThisFrame)
                 {
                     GUI3Enabled = !GUI3Enabled;
                 }
@@ -102,7 +102,15 @@ namespace GorillaUI
                 GUI3Enabled = false;
             }
 
-            if (inRoom)//enable mods here
+            if (inRoom) // NO CLIP INGAME HOTKEY
+            {
+                if (ControllerInputPoller.instance.rightControllerSecondaryButton) //  B
+                {
+                    NoClip = !NoClip;
+                }
+            }
+
+            if (inRoom)
             {
                 foreach (MeshCollider Coliders in Resources.FindObjectsOfTypeAll<MeshCollider>())//no clip mod
                 {
@@ -110,19 +118,18 @@ namespace GorillaUI
                 }
                 if (DisabledLeaves) // leaf mod
                 {
-                    GameObject Leaf = GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest/fallleaves (combined by EdMeshCombinerSceneProcessor)");
-                    Leaf.SetActive(false);
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(18).gameObject.SetActive(false);
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(19).gameObject.SetActive(false);
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(20).gameObject.SetActive(false);
                 }
-            }
-            if (inRoom == false)//disable all mods here
-            {
-                foreach (MeshCollider Coliders in Resources.FindObjectsOfTypeAll<MeshCollider>())
+                if (DisabledLeaves == false) // DISABLES LEAF MOD
                 {
-                    //no clip disable
-                    Coliders.enabled = true;
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(18).gameObject.SetActive(true);
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(19).gameObject.SetActive(true);
+                    GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(20).gameObject.SetActive(true);
                 }
-
             }
+
 
 
 
@@ -130,8 +137,8 @@ namespace GorillaUI
         }
 
         /* This attribute tells Utilla to call this method when a modded room is joined */
-        [ModdedGamemodeJoin]
-        public void OnJoin(string gamemode)
+        /*[ModdedGamemodeJoin]*/
+        void OnModdedJoined(string modeName)
         {
             /* Activate your mod here */
             /* This code will run regardless of if the mod is enabled*/
@@ -140,10 +147,18 @@ namespace GorillaUI
         }
 
         /* This attribute tells Utilla to call this method when a modded room is left */
-        [ModdedGamemodeLeave]
-        public void OnLeave(string gamemode)
+        /*[ModdedGamemodeLeave]*/
+        void OnModdedLeft(string modeName)
         {
+            GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(19).gameObject.SetActive(true);//leaf mod disable
+            GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(20).gameObject.SetActive(true);
+            GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(21).gameObject.SetActive(true);
 
+            foreach (MeshCollider Coliders in Resources.FindObjectsOfTypeAll<MeshCollider>())//noclip disable
+            {
+                //no clip disable
+                Coliders.enabled = true;
+            }
 
             inRoom = false;
         }
@@ -153,7 +168,7 @@ namespace GorillaUI
         {
             if (GUIEnabled)
             {
-                GUI.Box(new Rect(10, 10, 150, 350), "GorillaUI");
+                GUI.Box(new Rect(10, 10, 150, 300), "GorillaUI");
 
                 room = GUI.TextField(new Rect(15, 50, 140, 30), room, 25);
 
@@ -166,7 +181,7 @@ namespace GorillaUI
                     }
                     else
                     {
-                        Debug.Log("Room name cannot be empty.");
+                        Debug.Log("Room name is empty.");
                     }
 
                 }
@@ -232,24 +247,24 @@ namespace GorillaUI
 
             if (GUI3Enabled)
             {
-                GUI.Box(new Rect(10, 450, 150, 250), "Debug NOT READY, UAYOR");
+                GUI.Box(new Rect(10, 350, 150, 250), "Gorilla Menu");
 
-                if (GUI.Button(new Rect(15, 500, 140, 40), "NoClip"))
+                if (GUI.Button(new Rect(15, 400, 140, 40), "NoClip"))
                 {
                     NoClip = !NoClip;
                 }
 
-                if (GUI.Button(new Rect(15, 550, 140, 40), "Toggle Leaves"))
+                if (GUI.Button(new Rect(15, 450, 140, 40), "Toggle Leaves"))
                 {
                     DisabledLeaves = !DisabledLeaves;
                 }
 
-                if (GUI.Button(new Rect(15, 600, 140, 40), "Placeholder"))
+                if (GUI.Button(new Rect(15, 500, 140, 40), "Placeholder"))
                 {
 
                 }
 
-                if (GUI.Button(new Rect(15, 650, 140, 40), "Placeholder"))
+                if (GUI.Button(new Rect(15, 550, 140, 40), "Placeholder"))
                 {
 
                 }

@@ -32,6 +32,9 @@
     <Reference Include="Mono.Security">
       <HintPath>$(GameAssemblyPath)\Mono.Security.dll</HintPath>
     </Reference>
+    <Reference Include="Newtilla">
+      <HintPath>..\..\..\..\..\..\Program Files\Oculus\Software\Software\another-axiom-gorilla-tag\BepInEx\plugins\Newtilla\Newtilla.dll</HintPath>
+    </Reference>
     <Reference Include="Oculus.Platform">
       <HintPath>$(GameAssemblyPath)\Oculus.Platform.dll</HintPath>
     </Reference>
@@ -277,9 +280,6 @@
     </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>$(GameAssemblyPath)\UnityEngine.XRModule.dll</HintPath>
-    </Reference>
-    <Reference Include="Utilla">
-      <HintPath>$(PluginsPath)\Utilla\Utilla.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
       <HintPath>$(GameAssemblyPath)\websocket-sharp.dll</HintPath>
