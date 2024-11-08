@@ -19,7 +19,10 @@ namespace GorillaUI
 
     /* This attribute tells Utilla to look for [ModdedGameJoin] and [ModdedGameLeave] */
     /*[ModdedGamemode]*/
-    [BepInDependency("org.legoandmars.gorillatag.utilla", "1.5.0")]
+    [BepInDependency("Lofiat.Newtilla", "1.0.1")]
+    [BepInIncompatibility("org.iidk.gorillatag.iimenu")]
+    [BepInIncompatibility("com.goldentrophy.gorillatag.nametags")]
+    [BepInIncompatibility("com.dedouwe26.gorillatag.cosmetx")]
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
     public class GorillaUI : BaseUnityPlugin
     {
