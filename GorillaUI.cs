@@ -19,10 +19,10 @@ namespace GorillaUI
 
     /* This attribute tells Utilla to look for [ModdedGameJoin] and [ModdedGameLeave] */
     /*[ModdedGamemode]*/
-    [BepInDependency("Lofiat.Newtilla", "1.0.1")]
-    [BepInIncompatibility("org.iidk.gorillatag.iimenu")]
-    [BepInIncompatibility("com.goldentrophy.gorillatag.nametags")]
-    [BepInIncompatibility("com.dedouwe26.gorillatag.cosmetx")]
+    [BepInDependency("Lofiat.Newtilla", "1.1.0")]
+    [BepInIncompatibility("org.iidk.gorillatag.iimenu")]//screw you iidk
+    [BepInIncompatibility("com.goldentrophy.gorillatag.nametags")]//no1 loves you
+    [BepInIncompatibility("com.dedouwe26.gorillatag.cosmetx")]//follow some laws 👍
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
     public class GorillaUI : BaseUnityPlugin
     {
@@ -32,7 +32,9 @@ namespace GorillaUI
         bool GUI2Enabled = false;
         bool GUI3Enabled = false;
         bool NoClip = false;
+        bool NoClip2 = false;
         bool DisabledLeaves = false;
+        bool tped;
 
 
 
@@ -126,7 +128,25 @@ namespace GorillaUI
                     GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(20).gameObject.SetActive(true);
                 }
             }
-            Vector3 tped = new Vector3(-68, 12, -83);
+            if(tped)
+            {
+
+                NoClip = false;
+                GameObject forest = GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest");
+                GameObject sky = GameObject.Find("Environment Objects/LocalObjects_Prefab/Standard Sky");
+                GameObject city1 = GameObject.Find("Environment Objects/LocalObjects_Prefab/Vista_Prefab");
+                GameObject city2 = GameObject.Find("Environment Objects/LocalObjects_Prefab/City_WorkingPrefab");//TreeRoom
+                GameObject tree = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom/TreeRoomInteractables");
+                GameObject treeroom = GameObject.Find("Environment Objects/LocalObjects_Prefab/TreeRoom");
+                forest.SetActive(true);
+                treeroom.SetActive(true);
+                tree.SetActive(true);
+                sky.SetActive(true);
+                city1.SetActive(false);
+                city2.SetActive(false);
+                tped = false;
+            }
+            /*Vector3 tped = new Vector3(-68, 12, -83);
             Vector3 prepos = GorillaLocomotion.Player.Instance.headCollider.transform.position;
             if (prepos.Equals(tped))
             {
@@ -143,7 +163,9 @@ namespace GorillaUI
                 sky.SetActive(true);
                 city1.SetActive(false);
                 city2.SetActive(false);
-            }
+                NoClip = false;
+            }*/
+
 
 
 
@@ -278,6 +300,7 @@ namespace GorillaUI
 
                 if (GUI.Button(new Rect(15, 500, 140, 40), "Tp to stump"))
                 {
+                    tped = true;
                     NoClip = true;
                     //GameObject forest = GameObject.Find("Environment Objects / LocalObjects_Prefab / Forest");
                     //forest.SetActive(true);
