@@ -12,17 +12,10 @@ using System.Xml.Linq;
 
 namespace GorillaUI
 {
-
-    /// <summary>
-    /// This is your mod's main class.
-    /// </summary>
-
-    /* This attribute tells Utilla to look for [ModdedGameJoin] and [ModdedGameLeave] */
-    /*[ModdedGamemode]*/
     [BepInDependency("Lofiat.Newtilla", "1.1.0")]
-    [BepInIncompatibility("org.iidk.gorillatag.iimenu")]//screw you iidk
-    [BepInIncompatibility("com.goldentrophy.gorillatag.nametags")]//no1 loves you
-    [BepInIncompatibility("com.dedouwe26.gorillatag.cosmetx")]//follow some laws 👍
+    [BepInIncompatibility("org.iidk.gorillatag.iimenu")]
+    [BepInIncompatibility("com.goldentrophy.gorillatag.nametags")]
+    [BepInIncompatibility("com.dedouwe26.gorillatag.cosmetx")]
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
     public class GorillaUI : BaseUnityPlugin
     {
@@ -36,38 +29,20 @@ namespace GorillaUI
         bool DisabledLeaves = false;
         bool tped;
 
-
-
-
         void Start()
         {
-            /* A lot of Gorilla Tag systems will not be set up when start is called /*
-			/* Put code in OnGameInitialized to avoid null references */
-
             Newtilla.Newtilla.OnJoinModded += OnModdedJoined;
             Newtilla.Newtilla.OnLeaveModded += OnModdedLeft;
         }
 
         void OnEnable()
         {
-            /* Set up your mod here */
-            /* Code here runs at the start and whenever your mod is enabled*/
-
             HarmonyPatches.ApplyHarmonyPatches();
         }
 
         void OnDisable()
         {
-            /* Undo mod setup here */
-            /* This provides support for toggling mods with ComputerInterface, please implement it :) */
-            /* Code here runs whenever your mod is disabled (including if it disabled on startup)*/
-
             HarmonyPatches.RemoveHarmonyPatches();
-        }
-
-        void OnGameInitialized(object sender, EventArgs e)
-        {
-
         }
 
         void Update()
@@ -86,15 +61,11 @@ namespace GorillaUI
 
             }
 
-
-
             if (Keyboard.current.qKey.wasPressedThisFrame)
             {
                 isThirdPerson = !isThirdPerson;
                 GorillaTagger.Instance.thirdPersonCamera.SetActive(isThirdPerson);
             }
-
-
 
             if (inRoom)
             {
@@ -108,20 +79,19 @@ namespace GorillaUI
                 GUI3Enabled = false;
             }
 
-
             if (inRoom)
             {
-                foreach (MeshCollider Coliders in Resources.FindObjectsOfTypeAll<MeshCollider>())//no clip mod
+                foreach (MeshCollider Coliders in Resources.FindObjectsOfTypeAll<MeshCollider>())
                 {
                     Coliders.enabled = !NoClip;
                 }
-                if (DisabledLeaves) // leaf mod
+                if (DisabledLeaves)
                 {
                     GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(18).gameObject.SetActive(false);
                     GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(19).gameObject.SetActive(false);
                     GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(20).gameObject.SetActive(false);
                 }
-                if (DisabledLeaves == false) // DISABLES LEAF MOD
+                if (DisabledLeaves == false)
                 {
                     GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(18).gameObject.SetActive(true);
                     GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(19).gameObject.SetActive(true);
@@ -165,37 +135,20 @@ namespace GorillaUI
                 city2.SetActive(false);
                 NoClip = false;
             }*/
-
-
-
-
-
-
-
-
         }
-
-        /* This attribute tells Utilla to call this method when a modded room is joined */
-        /*[ModdedGamemodeJoin]*/
+	
         void OnModdedJoined(string modeName)
         {
-            /* Activate your mod here */
-            /* This code will run regardless of if the mod is enabled*/
-
             inRoom = true;
         }
-
-        /* This attribute tells Utilla to call this method when a modded room is left */
-        /*[ModdedGamemodeLeave]*/
         void OnModdedLeft(string modeName)
         {
-            GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(18).gameObject.SetActive(true);//leaf mod disable
+            GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(18).gameObject.SetActive(true);
             GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(19).gameObject.SetActive(true);
             GameObject.Find("Environment Objects/LocalObjects_Prefab/Forest").transform.GetChild(20).gameObject.SetActive(true);
 
-            foreach (MeshCollider Coliders in Resources.FindObjectsOfTypeAll<MeshCollider>())//noclip disable
+            foreach (MeshCollider Coliders in Resources.FindObjectsOfTypeAll<MeshCollider>())
             {
-                //no clip disable
                 Coliders.enabled = true;
             }
 
@@ -243,16 +196,6 @@ namespace GorillaUI
                         GorillaTagger.Instance.thirdPersonCamera.SetActive(isThirdPerson);
                     }
                 }
-
-                /*if (GUI.Button(new Rect(15, 300, 140, 40), "Placeholder"))
-                {
-                        
-                }
-
-                /*if (GUI.Button(new Rect(15, 400, 140, 40), "Placeholder"))
-                {
-						
-                }*/
             }
 
             if (GUI2Enabled)
@@ -302,8 +245,6 @@ namespace GorillaUI
                 {
                     tped = true;
                     NoClip = true;
-                    //GameObject forest = GameObject.Find("Environment Objects / LocalObjects_Prefab / Forest");
-                    //forest.SetActive(true);
                     GorillaLocomotion.Player.Instance.headCollider.transform.position = new Vector3(-68, 12, -83);
                 }
 
